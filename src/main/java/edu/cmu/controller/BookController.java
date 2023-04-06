@@ -24,7 +24,7 @@ public class BookController {
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
-        bookService.deleteAll();
+       //bookService.deleteAll();
     }
 
     @Operation(summary = "Add a new book")
@@ -39,7 +39,7 @@ public class BookController {
         if (book.isPriceInvalid()) {
             return new ResponseEntity<>(new ErrorMessage("The price of the book is not valid"), HttpStatus.BAD_REQUEST);
         }
-        return bookService.addBook(book);
+        return new ResponseEntity<>(bookService.addBook(book), HttpStatus.CREATED);
     }
 
     @Operation(summary = "update a book by ISBN")
@@ -54,10 +54,11 @@ public class BookController {
         if (book.isPriceInvalid()) {
             return new ResponseEntity<>(new ErrorMessage("The price of the book is not valid"), HttpStatus.BAD_REQUEST);
         }
-        if (bookService.findByISBN(ISBN) == null) {
+        if (bookService.findBook(ISBN) == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return bookService.updateBook(book, ISBN);
+        return new ResponseEntity<>(bookService.updateBook(book), HttpStatus.OK);
+
     }
 
     @Operation(summary = "retrieve a book by ISBN")
@@ -69,7 +70,7 @@ public class BookController {
     })
     @GetMapping({"/{ISBN}", "/isbn/{ISBN}"})
     public ResponseEntity<?> retrieveBook(@PathVariable String ISBN) {
-        var book = bookService.findByISBN(ISBN);
+        var book = bookService.findBook(ISBN);
         return book == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(book, HttpStatus.OK);
     }
 
