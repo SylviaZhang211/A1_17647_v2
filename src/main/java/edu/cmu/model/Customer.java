@@ -1,5 +1,6 @@
 package edu.cmu.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -64,5 +65,8 @@ public class Customer {
     @JsonProperty("zipcode")
     private String zipcode;
 
-
+    @JsonIgnore
+    public boolean isStateInvalid() {
+        return !validStateAbbreviations.contains(state);
+    }
 }
