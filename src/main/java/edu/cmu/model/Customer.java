@@ -1,11 +1,7 @@
 package edu.cmu.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -15,53 +11,58 @@ import java.util.Set;
 @Entity
 @Data
 public class Customer {
-
     static Set<String> validStateAbbreviations = Set.of(
             "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID",
             "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT",
             "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
             "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
     );
-
     @Id
-    @NotNull
+    //@NonNull
+    @JsonProperty("id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
+    //@NonNull
     @NotNull
+    @JsonProperty("userId")
     @Email
-    @JsonProperty
     private String userId;
 
+    //@NonNull
     @NotNull
-    @JsonProperty
+    @JsonProperty("name")
     private String name;
-
+    //@NonNull
     @NotNull
-    @JsonProperty
+    @JsonProperty("phone")
     private String phone;
 
+
+    //@NonNull
     @NotNull
-    @JsonProperty
+    @JsonProperty("address")
     private String address;
 
-    @JsonProperty
+
+    @JsonProperty("address2")
     private String address2;
 
+    //@NonNull
     @NotNull
-    @JsonProperty
+    @JsonProperty("city")
     private String city;
 
+    //@NonNull
     @NotNull
-    @JsonProperty
+    @JsonProperty("state")
     private String state;
 
+    //@NonNull
     @NotNull
-    @JsonProperty
+    @JsonProperty("zipcode")
     private String zipcode;
 
-    @JsonIgnore
-    public boolean isStateInvalid() {
-        return !validStateAbbreviations.contains(state);
-    }
+
 }
