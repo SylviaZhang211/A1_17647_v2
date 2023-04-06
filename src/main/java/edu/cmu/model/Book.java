@@ -1,5 +1,6 @@
 package edu.cmu.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -44,7 +45,10 @@ public class Book {
     @JsonProperty("quantity")
     private int quantity;
 
-
+    @JsonIgnore
+    public boolean isPriceInvalid() {
+        return !String.valueOf(price).equals(String.format("%.2f", price));
+    }
 
 }
 //
