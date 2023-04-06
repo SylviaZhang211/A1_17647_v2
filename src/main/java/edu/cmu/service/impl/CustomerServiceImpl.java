@@ -10,34 +10,23 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+    CustomerRepository cr;
 
-    final
-    CustomerRepository customerRepository;
-
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public CustomerServiceImpl(CustomerRepository cr){
+        this.cr = cr;
+    }
+    @Override
+    public Customer addCustomer(Customer customer) {
+        return cr.save(customer);
     }
 
     @Override
-    public ResponseEntity<?> addCustomer(Customer customer) {
-        if (customerRepository.existsByUserId(customer.getUserId())) {
-            return new ResponseEntity<>(new ErrorMessage("This user ID already exists in the system."), HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.CREATED);
+    public Customer findCustomerByID(int ID) {
+        return cr.findById(ID).orElse(null);
     }
 
     @Override
-    public Customer findById(int id) {
-        return customerRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Customer findByUserId(String userId) {
-        return customerRepository.findCustomerByUserId(userId);
-    }
-
-    @Override
-    public void deleteAll() {
-        customerRepository.deleteAll();
+    public Customer findCustomerByEmail(String email) {
+        return cr.findByUserId(email);
     }
 }

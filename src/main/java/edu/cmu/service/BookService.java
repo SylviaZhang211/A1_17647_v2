@@ -5,11 +5,9 @@ import org.springframework.http.ResponseEntity;
 
 public interface BookService {
 
-    ResponseEntity<?> addBook(Book book);
+    Book findBook(String ISBN);
 
-    Book findByISBN(String isbn);
+    Book addBook(Book book);
 
-    ResponseEntity<?> updateBook(Book book, String isbn);
-
-    void deleteAll();
+    Book updateBook(Book book);
 }

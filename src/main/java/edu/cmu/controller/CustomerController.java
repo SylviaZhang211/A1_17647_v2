@@ -27,7 +27,7 @@ public class CustomerController {
 
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
-        customerService.deleteAll();
+        //customerService.deleteAll();
     }
 
     @Operation(summary = "Add a new customer")
@@ -42,7 +42,7 @@ public class CustomerController {
         if (customer.isStateInvalid()) {
             return new ResponseEntity<>(new ErrorMessage("The state of the customer is not valid"), HttpStatus.BAD_REQUEST);
         }
-        return customerService.addCustomer(customer);
+        return new ResponseEntity<>(customerService.addCustomer(customer), HttpStatus.CREATED);
     }
 
     @Operation(summary = "retrieve a customer by ID")
@@ -54,7 +54,7 @@ public class CustomerController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveCustomerById(@PathVariable int id) {
-        var customer = customerService.findById(id);
+        var customer = customerService.findCustomerByID(id);
         return customer == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
@@ -67,7 +67,7 @@ public class CustomerController {
     })
     @GetMapping("")
     public ResponseEntity<?> retrieveCustomerByUserId(@RequestParam @Email String userId) {
-        var customer = customerService.findByUserId(userId);
+        var customer = customerService.findCustomerByEmail(userId);
         return customer == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(customer, HttpStatus.OK);
     }
 

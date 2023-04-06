@@ -10,36 +10,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BookServiceImpl implements BookService {
-
-    final
-    BookRepository bookRepository;
-
+    //BookRepository bookRepository;
+    //@Autowired
+    BookRepository br;
     public BookServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+        this.br = bookRepository;
     }
 
     @Override
-    public ResponseEntity<?> addBook(Book book) {
-        if (bookRepository.existsById(book.getISBN())) {
-            return new ResponseEntity<>(new ErrorMessage("This ISBN already exists in the system."), HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        return new ResponseEntity<>(bookRepository.save(book), HttpStatus.CREATED);
+    public Book findBook(String ISBN) {
+        return br.findById(ISBN).orElse(null);
     }
 
     @Override
-    public ResponseEntity<?> updateBook(Book book, String ISBN) {
-        book.setISBN(ISBN);
-        return new ResponseEntity<>(bookRepository.save(book), HttpStatus.OK);
+    public Book addBook(Book book) {
+        return br.save(book);
     }
 
     @Override
-    public void deleteAll() {
-        bookRepository.deleteAll();
+    public Book updateBook(Book book) {
+        return br.save(book);
     }
 
-    @Override
-    public Book findByISBN(String ISBN) {
-        return bookRepository.findById(ISBN).orElse(null);
-    }
 
 }
